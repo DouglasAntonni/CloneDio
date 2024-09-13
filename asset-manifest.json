@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/CloneDio/static/js/main.55bd4990.js",
+    "static/media/banner.png": "/CloneDio/static/media/banner.9ab4ead1c68ede88f1ce.png",
+    "index.html": "/CloneDio/index.html",
+    "main.55bd4990.js.map": "/CloneDio/static/js/main.55bd4990.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.55bd4990.js"
+  ]
+}
