@@ -1,7 +1,7 @@
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { LockIcon, MailIcon } from "../../components/icons";
+import { LockIcon, MailIcon, PersonIcon } from "../../components/icons";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/button";
 import { Header } from "../../components/header";
@@ -10,22 +10,22 @@ import { api } from "../../services/api";
 import {
   Column,
   Container,
-  EsqueciButton,
   Row,
   SubTitleLogin,
   Title,
   TitleLogin,
-  Wrapper, ButtonCreateAccount 
+  Wrapper 
 } from "./styles";
 
 const schema = yup
   .object({
+    NomeCompleto: yup.string().min(3, "O nome deve ter no mínimo 3 caracteres").required("Campo obrigatório"),
     Email: yup.string().email("esse email não é válido").required("Campo obrigatório"),
     Password: yup.string().min(3, "no minimo 3 caracteres").required("Campo obrigatório"),
   })
   .required();
 
-const Login = () => {
+const Cadastro = () => {
   const navigate = useNavigate();
 
   const {
@@ -36,29 +36,32 @@ const Login = () => {
     mode: 'onChange', 
    });
   
-   const onSubmit = async formData => {
+   const onSubmit = async (formData) => {
     try {
       
-      const {data} = await api.get(`users?email=${formData.Email}&password=${formData.Password}`);
-      
-      
-      if (data.length === 1) {
-        
-        navigate("/feed");
-      } else {
-        
-        alert('E-mail ou senha incorretos');
+      const { data: existingUser } = await api.get(
+        `users?email=${formData.Email}`
+      );
+  
+      if (existingUser.length > 0) {
+        alert('Este e-mail já está registrado. Tente outro e-mail.');
+        return;
       }
+  
+      
+      await api.post('users', {
+        nomeCompleto: formData.NomeCompleto,
+        email: formData.Email,
+        password: formData.Password
+      });
+        navigate("/feed");
     } catch {
       alert('Houve um erro, tente novamente');
-      
     }
-    
   };
   
-const handleCreateAccount = () =>{
-  navigate("/cadastro");
-}
+  
+
  
 
   return (
@@ -73,9 +76,16 @@ const handleCreateAccount = () =>{
         </Column>
         <Column>
           <Wrapper>
-            <TitleLogin>Faça seu cadastro</TitleLogin>
-            <SubTitleLogin>Faça seu login e make the change._</SubTitleLogin>
+            <TitleLogin>Comece agora grátis</TitleLogin>
+            <SubTitleLogin>Crie sua conta e make the change._</SubTitleLogin>
             <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+                name="NomeCompleto"
+                control={control}
+                placeholder="Nome Completo"
+                errorMessage={errors.NomeCompleto?.message}
+                lefticon={<PersonIcon />}
+              />
               <Input
                 name="Email"
                 control={control}
@@ -92,16 +102,15 @@ const handleCreateAccount = () =>{
                 lefticon={<LockIcon />}
               />
               <Button
-                title="Entrar"
+                title="Criar minha conta"
                 variant="secundary"
                 type="submit"
               />
             </form>
             <Row>
-              <EsqueciButton>Esqueci minha Senha</EsqueciButton>
-              <ButtonCreateAccount onClick={handleCreateAccount}>
-                Criar Conta
-              </ButtonCreateAccount>
+              <p>
+
+              </p>
             </Row>
           </Wrapper>
         </Column>
@@ -110,4 +119,4 @@ const handleCreateAccount = () =>{
   );
 };
 
-export { Login };
+export { Cadastro };
