@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from "../../assets/logo-dio.png";
+import { IHeader } from "./types";
 import { Button } from '../button';
 import {
   Container,
@@ -13,7 +14,7 @@ import {
   Input
 } from "./styles";
 
-const Header = ({ autenticado }) => {
+const Header = ({ autenticado }: IHeader) => {
   const navigate = useNavigate();
 
   const handleClickLognIn = () => {

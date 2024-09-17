@@ -8,7 +8,7 @@ import {
     UserInfo, 
     UserPicture
 } from "./styles";
-import { ThumbUpIcon } from '../../components/icons';  // Importando o ícone
+import { ThumbUpIcon } from '../icons';  // Importando o ícone
 
 const Card = () => {
   return (
