@@ -27,10 +27,11 @@ export const Wrapper = styled.div`
     background-color: #151515;
     width: 100%;
     height: 47px;
-    isplay: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
-`
+`;
+
 
 export const BuscarInputContainer = styled.div`
     width: 175px;
